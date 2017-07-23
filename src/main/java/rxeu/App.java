@@ -26,6 +26,7 @@ public class App {
             run(new P7(), i);
             run(new P8(), i);
             run(new P9(), i);
+            run(new P10(), i);
             Instant stop = Instant.now();
             System.out.println(Duration.between(start, stop));
         }

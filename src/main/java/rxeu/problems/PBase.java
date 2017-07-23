@@ -40,7 +40,7 @@ public abstract class PBase {
      * @param template of message.
      */
     protected void l(String template) {
-        System.out.printf("Problem %d, \n" + template + '\n', this.problem());
+        System.out.printf("Problem %02d, \n" + template + '\n', this.problem());
     }
 
     /**
@@ -49,7 +49,7 @@ public abstract class PBase {
      * @param result number.
      */
     protected void r(Number result) {
-        System.out.printf("Problem %d, result->%d\n", this.problem(), result);
+        System.out.printf("Problem %02d, result->%d\n", this.problem(), result);
     }
 //
 //    protected boolean joolIsPrime(long i) {
