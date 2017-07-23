@@ -8,7 +8,7 @@ package rxeu.problems;
 import io.reactivex.Observable;
 import org.jooq.lambda.Seq;
 import org.jooq.lambda.tuple.Tuple;
-import rxeu.entity.Tup;
+import rxeu.entity.Tup2;
 
 /**
  * The sum of the squares of the first ten natural numbers is, 12 + 22 + ... + 102 = 385
@@ -44,11 +44,10 @@ public class P6 extends PBase {
 
     @Override
     public void rxJava() {
-        Observable.zip(
-                Observable.range(1, 100),
+        Observable.zip(Observable.range(1, 100),
                 Observable.range(1, 100).map(z -> z * z),
-                (x, y) -> new Tup<>(x, y))
-                .reduce((x, y) -> new Tup<>(x.a + y.a, x.b + y.b))
+                (x, y) -> new Tup2<>(x, y))
+                .reduce((x, y) -> new Tup2<>(x.a + y.a, x.b + y.b))
                 .map(x -> x.a * x.a - x.b)
                 .subscribe(this::r);
     }

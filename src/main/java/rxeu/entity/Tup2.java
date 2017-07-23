@@ -11,12 +11,12 @@ import java.util.Objects;
  *
  * @author HlubyLuk
  */
-public class Tup<A, B> {
+public class Tup2<A, B> {
 
     public final A a;
     public final B b;
 
-    public Tup(A a, B b) {
+    public Tup2(A a, B b) {
         this.a = a;
         this.b = b;
     }
@@ -40,7 +40,7 @@ public class Tup<A, B> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Tup<?, ?> other = (Tup<?, ?>) obj;
+        final Tup2<?, ?> other = (Tup2<?, ?>) obj;
         if (!Objects.equals(this.a, other.a)) {
             return false;
         }

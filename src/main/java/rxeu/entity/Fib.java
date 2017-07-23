@@ -10,7 +10,7 @@ package rxeu.entity;
  * <p>
  * @author HlubyLuk
  */
-public class Fib extends Tup<Integer, Integer> {
+public class Fib extends Tup2<Integer, Integer> {
 
     public Fib() {
         super(1, 2);

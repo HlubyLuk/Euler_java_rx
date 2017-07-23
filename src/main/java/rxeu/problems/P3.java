@@ -8,7 +8,7 @@ package rxeu.problems;
 import io.reactivex.Observable;
 import org.jooq.lambda.Seq;
 import org.jooq.lambda.tuple.Tuple2;
-import rxeu.entity.Tup;
+import rxeu.entity.Tup2;
 
 /**
  * The prime factors of 13195 are 5, 7, 13 and 29.
@@ -43,10 +43,10 @@ public class P3 extends PBase {
 
     @Override
     public void rxJava() {
-        Observable.<Tup<Long, Long>, Tup<Long, Long>>generate(() -> new Tup<>(NUMBER, sqrt(NUMBER)),
+        Observable.<Tup2<Long, Long>, Tup2<Long, Long>>generate(() -> new Tup2<>(NUMBER, sqrt(NUMBER)),
                 (x, y) -> {
                     y.onNext(x);
-                    return new Tup<>(x.a, x.b - 1);
+                    return new Tup2<>(x.a, x.b - 1);
                 })
                 .takeWhile(x -> x.b > 1)
                 .filter(x -> x.a % x.b == 0)

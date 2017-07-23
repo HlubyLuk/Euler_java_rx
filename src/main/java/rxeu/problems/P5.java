@@ -10,7 +10,7 @@ import io.reactivex.Single;
 import java.math.BigInteger;
 import org.jooq.lambda.Seq;
 import org.jooq.lambda.tuple.Tuple;
-import rxeu.entity.Tup;
+import rxeu.entity.Tup2;
 
 /**
  * 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any
@@ -43,11 +43,10 @@ public class P5 extends PBase {
 
     @Override
     public void rxJava() {
-        this.r((Number) Observable.<BigInteger, Tup<BigInteger, BigInteger>>generate(
-                () -> new Tup<>(BigInteger.ONE, BigInteger.ONE),
+        this.r((Number) Observable.<BigInteger, Tup2<BigInteger, BigInteger>>generate(() -> new Tup2<>(BigInteger.ONE, BigInteger.ONE),
                 (x, y) -> {
                     y.onNext(x.b);
-                    return new Tup(x.a.add(BigInteger.ONE), x.a.divide(x.a.gcd(x.b)).multiply(x.b));
+                    return new Tup2(x.a.add(BigInteger.ONE), x.a.divide(x.a.gcd(x.b)).multiply(x.b));
                 }).take(20)
                 .last(1).blockingGet()
         );
