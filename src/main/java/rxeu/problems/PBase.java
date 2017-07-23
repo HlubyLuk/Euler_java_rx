@@ -51,12 +51,7 @@ public abstract class PBase {
     protected void r(Number result) {
         System.out.printf("Problem %02d, result->%d\n", this.problem(), result);
     }
-//
-//    protected boolean joolIsPrime(long i) {
-//        return Seq.range(2, sqrt(i)).allMatch(x -> i % x != 0);
-//    }
 
-    // Returns floor(sqrt(x)), for x >= 0.
     /**
      * Returns floor(sqrt(x)), for x >= 0.
      * <p>
