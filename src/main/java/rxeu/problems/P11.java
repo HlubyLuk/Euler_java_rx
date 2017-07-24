@@ -6,10 +6,9 @@
 package rxeu.problems;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
-import rxeu.entity.Same2;
+import org.jooq.lambda.Seq;
+import org.jooq.lambda.tuple.Tuple;
 import rxeu.entity.Same3;
-import rxeu.entity.Tup2;
 
 /**
  * In the 20×20 grid below, four numbers along a diagonal line have been marked in red.
@@ -77,7 +76,22 @@ public class P11 extends PBase {
 
     @Override
     public void jool() {
-
+        //Seq<Integer> matrix = Seq.of(MATRIX.split("\n")).flatMap(a -> Seq.of(a.split(" "))).map(Integer::valueOf);
+        this.r(
+                Seq.of(
+                        Tuple.tuple(0, 20 * 20 - 3, 1),
+                        Tuple.tuple(3, 20 * 20 - 3 * 20, 20),
+                        Tuple.tuple(0, 20 * 20 - 3 * 20, 19),
+                        Tuple.tuple(0, 20 * 20 - 3 * 20 - 3, 21)
+                ).map(b -> Seq.iterate(b.v1, c -> c + 1)
+                        .limitWhile(c -> c < b.v2)
+                        .map(c -> Seq.iterate(c, d -> d + b.v3).limit(4)))
+                        .map(z -> z.map(b -> b.map(c -> Seq.of(MATRIX.split("\n")).flatMap(a -> Seq.of(a.split(" "))).map(Integer::valueOf).skip(c).limit(1).findFirst().get())))
+                        .flatMap(a -> a.map(b -> b.map(Integer::valueOf)))
+                        .map(a -> a.reduce((b, c) -> b * c).get())
+                        .reduce((a, b) -> a > b ? a : b)
+                        .get()
+        );
     }
 
     @Override

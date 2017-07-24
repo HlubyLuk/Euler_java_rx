@@ -6,7 +6,6 @@
 package rxeu.problems;
 
 import java.io.PrintStream;
-import org.jooq.lambda.Seq;
 
 /**
  * Common method implementation for problems
