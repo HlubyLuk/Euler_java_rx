@@ -15,6 +15,7 @@ import java.io.PrintStream;
 public abstract class PBase {
 
     protected static final PrintStream OUT = System.out;
+    private Number result;
 
     /**
      * Number of solving problem.
@@ -33,6 +34,15 @@ public abstract class PBase {
      */
     public abstract void rxJava();
 
+    public Number run(boolean jool) {
+        if (jool) {
+            this.jool();
+        } else {
+            this.rxJava();
+        }
+        return this.result;
+    }
+
     /**
      * Print log.
      * <p>
@@ -48,7 +58,7 @@ public abstract class PBase {
      * @param result number.
      */
     protected void r(Number result) {
-        System.out.printf("Problem %02d, result->%d\n", this.problem(), result);
+        this.result = result;
     }
 
     /**

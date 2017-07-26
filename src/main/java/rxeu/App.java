@@ -35,10 +35,8 @@ public class App {
     }
 
     public static void run(PBase problem, int i) {
-        if (i % 2 == 0) {
-            problem.jool();
-        } else {
-            problem.rxJava();
-        }
+        Instant start = Instant.now();
+        System.out.printf("Problem->%2d, result->%15d, duration-> %s\n", problem.problem(),
+                problem.run(i % 2 == 0), Duration.between(start, Instant.now()));
     }
 }
