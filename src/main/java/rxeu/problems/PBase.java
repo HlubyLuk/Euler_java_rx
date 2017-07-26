@@ -48,7 +48,7 @@ public abstract class PBase {
      * <p>
      * @param template of message.
      */
-    protected void l(String template) {
+    protected void l(Object template) {
         System.out.printf("Problem %02d, \n" + template + '\n', this.problem());
     }
 
