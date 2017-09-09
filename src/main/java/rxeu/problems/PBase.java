@@ -34,11 +34,19 @@ public abstract class PBase {
      */
     public abstract void rxJava();
 
-    public Number run(boolean jool) {
-        if (jool) {
-            this.jool();
-        } else {
-            this.rxJava();
+    public abstract void java();
+
+    public Number run(int type) {
+        switch (type % 3) {
+            case 0:
+                this.jool();
+                break;
+            case 1:
+                this.rxJava();
+                break;
+            case 2:
+                this.java();
+                break;
         }
         return this.result;
     }

@@ -20,6 +20,8 @@ import org.jooq.lambda.Seq;
  */
 public class P4 extends PBase {
 
+    private static final int START = 100, STOP = 1000, COUNT = STOP - START;
+
     @Override
     public int problem() {
         return 4;
@@ -27,20 +29,19 @@ public class P4 extends PBase {
 
     @Override
     public void jool() {
-        this.r(
-                Seq.crossJoin(Seq.range(100, 1000), Seq.range(100, 1000))
-                        .map(x -> x.v1 * x.v2).distinct()
-                        .filter(x -> true == Seq.of(x)
-                        .map(String::valueOf)
-                        .map(y -> y.equals(new StringBuilder(y).reverse().toString()))
-                        .findFirst().get())
-                        .reduce((x, y) -> x > y ? x : y).get()
+        this.r(Seq.crossJoin(Seq.range(START, STOP), Seq.range(100, 1000))
+                .map(x -> x.v1 * x.v2).distinct()
+                .filter(x -> true == Seq.of(x)
+                .map(String::valueOf)
+                .map(y -> y.equals(new StringBuilder(y).reverse().toString()))
+                .findFirst().get())
+                .reduce((x, y) -> x > y ? x : y).get()
         );
     }
 
     @Override
     public void rxJava() {
-        Observable.range(100, 900).flatMap(x -> Observable.range(100, 900).map(y -> x * y))
+        Observable.range(START, COUNT).flatMap(x -> Observable.range(START, COUNT).map(y -> x * y))
                 .distinct()
                 .filter(x -> true == Observable.just(x)
                 .map(String::valueOf)
@@ -48,5 +49,20 @@ public class P4 extends PBase {
                 .blockingFirst().booleanValue())
                 .reduce((x, y) -> x > y ? x : y)
                 .subscribe(this::r);
+    }
+
+    @Override
+    public void java() {
+        int tmp = Integer.MIN_VALUE;
+        for (int i = START; i < STOP; i += 1) {
+            for (int j = START; j < STOP; j += 1) {
+                int k = i * j;
+                if (new StringBuilder().append(k).reverse().toString().equals(String.valueOf(k))
+                        && tmp < k) {
+                    tmp = k;
+                }
+            }
+        }
+        this.r(tmp);
     }
 }

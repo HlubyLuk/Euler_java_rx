@@ -49,4 +49,26 @@ public class P9 extends PBase {
                 .firstElement().map(x -> x.a * x.b * x.c).subscribe(this::r);
     }
 
+    @Override
+    public void java() {
+        int a = Integer.MIN_VALUE;
+        for (int i = 1; i < STOP; i += 1) {
+            for (int j = 1; j < STOP; j += 1) {
+                for (int k = 1; k < STOP; k += 1) {
+                    if (i * i + j * j == k * k && i + j + k == 1000) {
+                        a = i * j * k;
+                        break;
+                    }
+                }
+                if (a != Integer.MIN_VALUE) {
+                    break;
+                }
+            }
+            if (a != Integer.MIN_VALUE) {
+                break;
+            }
+        }
+        this.r(a);
+    }
+
 }

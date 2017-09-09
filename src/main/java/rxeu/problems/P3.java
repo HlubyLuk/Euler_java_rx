@@ -55,4 +55,18 @@ public class P3 extends PBase {
                 .reduce((x, y) -> x > y ? x : y)
                 .subscribe(this::r);
     }
+
+    @Override
+    public void java() {
+        long number = NUMBER, i = 2, tmp = Integer.MIN_VALUE;
+        while (1 < number) {
+            if (number % i == 0) {
+                number /= i;
+                tmp = i;
+            } else {
+                i += 1;
+            }
+        }
+        this.r(tmp);
+    }
 }
