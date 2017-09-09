@@ -6,7 +6,6 @@
 package rxeu.problems;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import java.math.BigInteger;
 import org.jooq.lambda.Seq;
 import org.jooq.lambda.tuple.Tuple;
@@ -50,7 +49,15 @@ public class P5 extends PBase {
                 }).take(20)
                 .last(1).blockingGet()
         );
+    }
 
+    @Override
+    public void java() {
+        BigInteger tmp = BigInteger.ONE;
+        for (BigInteger j = BigInteger.ONE; j.intValue() < 21; j = j.add(BigInteger.ONE)) {
+            tmp = tmp.divide(tmp.gcd(j)).multiply(j);
+        }
+        this.r(tmp);
     }
 
 //@Override

@@ -13,9 +13,11 @@ import rxeu.problems.*;
  */
 public class App {
 
+    private static final int COUNT = 1;
+
     public static void main(String[] args) {
-        for (int i = 0; i < 2; i += 1) {
-            System.out.printf("%s\n", i % 2 == 0 ? "jool" : "rxjava");
+        for (int i = 0; i < 3 * COUNT; i += 1) {
+            name(i);
             Instant start = Instant.now();
             run(new P1(), i);
             run(new P2(), i);
@@ -35,9 +37,23 @@ public class App {
         }
     }
 
+    public static void name(int i) {
+        switch (i % 3) {
+            case 0:
+                System.out.println("jool");
+                break;
+            case 1:
+                System.out.println("rx java");
+                break;
+            case 2:
+                System.out.println("java");
+                break;
+        }
+    }
+
     public static void run(PBase problem, int i) {
         Instant start = Instant.now();
         System.out.printf("Problem->%2d, result->%15d, duration-> %s\n", problem.problem(),
-                problem.run(i % 2 == 0), Duration.between(start, Instant.now()));
+                problem.run(i), Duration.between(start, Instant.now()));
     }
 }

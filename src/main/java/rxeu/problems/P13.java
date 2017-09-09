@@ -238,4 +238,12 @@ public class P13 extends PBase {
                 .map(a -> a.toString().substring(0, 10)).map(BigInteger::new).subscribe(this::r);
     }
 
+    @Override
+    public void java() {
+        BigInteger tmp = BigInteger.ZERO;
+        for (String item : NUMBER.split("\n")) {
+            tmp = tmp.add(new BigInteger(item));
+        }
+        this.r(new BigInteger(tmp.toString().substring(0, 10)));
+    }
 }

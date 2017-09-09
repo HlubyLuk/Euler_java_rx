@@ -52,4 +52,22 @@ public class P7 extends PBase {
                 ).take(10002).lastElement().blockingGet()
         );
     }
+
+    @Override
+    public void java() {
+        int a = 0, b = 0;
+        while (b < 10002) {
+            a += 1;
+            int c = 0;
+            for (int i = 2; i * i < a + 1; i += 1) {
+                if (a % i == 0) {
+                    c += 1;
+                }
+            }
+            if (c == 0) {
+                b += 1;
+            }
+        }
+        this.r(a);
+    }
 }

@@ -6,6 +6,9 @@
 package rxeu.problems;
 
 import io.reactivex.Observable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.jooq.lambda.Seq;
 import org.jooq.lambda.tuple.Tuple;
 import rxeu.entity.Same3;
@@ -80,8 +83,8 @@ public class P11 extends PBase {
         this.r(
                 Seq.of(
                         Tuple.tuple(0, 20 * 20 - 3, 1),
-                        Tuple.tuple(3, 20 * 20 - 3 * 20, 20),
-                        Tuple.tuple(0, 20 * 20 - 3 * 20, 19),
+                        Tuple.tuple(0, 20 * 20 - 3 * 20, 20),
+                        Tuple.tuple(3, 20 * 20 - 3 * 20, 19),
                         Tuple.tuple(0, 20 * 20 - 3 * 20 - 3, 21)
                 ).map(b -> Seq.iterate(b.v1, c -> c + 1)
                         .limitWhile(c -> c < b.v2)
@@ -118,5 +121,47 @@ public class P11 extends PBase {
                 .map(a -> a.reduce((b, c) -> b > c ? b : c).blockingGet())
                 .reduce((a, b) -> a > b ? a : b)
                 .subscribe(this::r);
+    }
+
+    @Override
+    public void java() {
+        int tmp = Integer.MIN_VALUE;
+        int[] maxs = new int[4];
+        List<Integer> vals = new ArrayList<>();
+        for (String row : MATRIX.split("\n")) {
+            for (String cell : row.split(" ")) {
+                vals.add(Integer.valueOf(cell));
+            }
+        }
+        for (int i = 0; i < vals.size() - 4; i += 1) {
+            int max = vals.get(i) * vals.get(i + 1) * vals.get(i + 2) * vals.get(i + 3);
+            if (maxs[0] < max) {
+                maxs[0] = max;
+            }
+        }
+        for (int i = 0; i < vals.size() - 3 * 20; i += 1) {
+            int max = vals.get(i) * vals.get(i + 20) * vals.get(i + 20 * 2) * vals.get(i + 20 * 3);
+            if (maxs[1] < max) {
+                maxs[1] = max;
+            }
+        }
+        for (int i = 3; i < vals.size() - 3 * 20; i += 1) {
+            int max = vals.get(i) * vals.get(i + 19) * vals.get(i + 19 * 2) * vals.get(i + 19 * 3);
+            if (maxs[2] < max) {
+                maxs[2] = max;
+            }
+        }
+        for (int i = 0; i < vals.size() - 3 * 20 - 3; i += 1) {
+            int max = vals.get(i) * vals.get(i + 21) * vals.get(i + 21 * 2) * vals.get(i + 21 * 3);
+            if (maxs[3] < max) {
+                maxs[3] = max;
+            }
+        }
+        for (int max : maxs) {
+            if (tmp < max) {
+                tmp = max;
+            }
+        }
+        this.r(tmp);
     }
 }

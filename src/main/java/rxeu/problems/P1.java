@@ -44,4 +44,15 @@ public class P1 extends PBase {
                 .reduce((x, y) -> x + y)
                 .subscribe(this::r);
     }
+
+    @Override
+    public void java() {
+        int ret = 0;
+        for (int i = START; i < STOP; i += 1) {
+            if (i % 3 == 0 || i % 5 == 0) {
+                ret += i;
+            }
+        }
+        this.r(ret);
+    }
 }

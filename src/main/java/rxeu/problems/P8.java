@@ -98,4 +98,19 @@ public class P8 extends PBase {
                 .reduce((x, y) -> x > y ? x : y)
                 .subscribe(this::r);
     }
+
+    @Override
+    public void java() {
+        BigInteger a = BigInteger.ZERO;
+        for (int i = 0; i < NUMBER.length() - 13; i += 1) {
+            BigInteger b = BigInteger.ONE;
+            for (int j = 0; j < 13; j += 1) {
+                b = b.multiply(BigInteger.valueOf(NUMBER.charAt(i + j) - '0'));
+            }
+            if (a.compareTo(b) == -1) {
+                a = b;
+            }
+        }
+        this.r(a);
+    }
 }

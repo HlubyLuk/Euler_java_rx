@@ -51,4 +51,24 @@ public class P10 extends PBase {
         );
     }
 
+    @Override
+    public void java() {
+        int a = 1;
+        BigInteger b = BigInteger.ZERO;
+        while (a < 2000000) {
+            a += 1;
+            boolean add = true;
+            for (int i = 2; i * i < a + 1; i += 1) {
+                add &= a % i != 0;
+                if (!add) {
+                    break;
+                }
+            }
+            if (add) {
+                b = b.add(BigInteger.valueOf(a));
+            }
+        }
+        this.r(b);
+    }
+
 }

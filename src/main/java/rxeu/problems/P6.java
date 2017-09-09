@@ -51,4 +51,16 @@ public class P6 extends PBase {
                 .map(x -> x.a * x.a - x.b)
                 .subscribe(this::r);
     }
+
+    @Override
+    public void java() {
+        int x = 0, y = 0;
+        for (int i = 1; i < 101; i += 1) {
+            x += i * i;
+        }
+        for (int i = 1; i < 101; i += 1) {
+            y += i;
+        }
+        this.r(y * y - x);
+    }
 }
