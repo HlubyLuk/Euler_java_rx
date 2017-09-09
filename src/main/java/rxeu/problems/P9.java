@@ -7,6 +7,7 @@ package rxeu.problems;
 
 import io.reactivex.Observable;
 import org.jooq.lambda.Seq;
+import org.jooq.lambda.tuple.Tuple;
 import rxeu.entity.Same3;
 
 /**
@@ -31,44 +32,50 @@ public class P9 extends PBase {
 
     @Override
     public void jool() {
-        this.r(Seq.crossJoin(Seq.range(1, STOP), Seq.range(1, STOP), Seq.range(1, STOP))
-                .filter(x -> x.v1 * x.v1 + x.v2 * x.v2 == x.v3 * x.v3)
-                .filter(x -> x.v1 + x.v2 + x.v3 == 1000)
-                .findFirst().map(x -> x.v1 * x.v2 * x.v3).get()
-        );
+        this.r(Seq.crossJoin(Seq.range(1, STOP), Seq.range(1, STOP))
+                .map(x -> Tuple.tuple(x.v1, x.v2, 1000 - x.v1 - x.v2))
+                .findFirst(x -> x.v1 * x.v1 + x.v2 * x.v2 == x.v3 * x.v3)
+                .map(x -> x.v1 * x.v2 * x.v3)
+                .get());
     }
 
     @Override
     public void rxJava() {
         Observable.range(1, STOP)
-                .flatMap(x -> Observable.range(1, STOP)
-                .flatMap(y -> Observable.range(1, STOP)
-                .map(z -> new Same3<>(x, y, z))))
+                .flatMap(x -> Observable.range(1, STOP).map(y -> new Same3<>(x, y, 1000 - x - y)))
                 .filter(x -> x.a * x.a + x.b * x.b == x.c * x.c)
-                .filter(x -> x.a + x.b + x.c == 1000)
-                .firstElement().map(x -> x.a * x.b * x.c).subscribe(this::r);
+                .take(1)
+                .map(x -> x.a * x.b * x.c)
+                .subscribe(this::r);
     }
 
     @Override
     public void java() {
-        int a = Integer.MIN_VALUE;
-        for (int i = 1; i < STOP; i += 1) {
-            for (int j = 1; j < STOP; j += 1) {
-                for (int k = 1; k < STOP; k += 1) {
-                    if (i * i + j * j == k * k && i + j + k == 1000) {
-                        a = i * j * k;
-                        break;
-                    }
+//        int a = Integer.MIN_VALUE;
+//        for (int i = 1; i < STOP; i += 1) {
+//            for (int j = 1; j < STOP; j += 1) {
+//                for (int k = 1; k < STOP; k += 1) {
+//                    if (i * i + j * j == k * k && i + j + k == 1000) {
+//                        a = i * j * k;
+//                        break;
+//                    }
+//                }
+//                if (a != Integer.MIN_VALUE) {
+//                    break;
+//                }
+//            }
+//            if (a != Integer.MIN_VALUE) {
+//                break;
+//            }
+//        }
+//        this.r(a);
+        for (int a = 1; a < STOP; a += 1) {
+            for (int b = 1, c = 0; b < STOP; b += 1, c = 1000 - a - b) {
+                if (a * a + b * b == c * c) {
+                    this.r(a * b * c);
+                    return;
                 }
-                if (a != Integer.MIN_VALUE) {
-                    break;
-                }
-            }
-            if (a != Integer.MIN_VALUE) {
-                break;
             }
         }
-        this.r(a);
     }
-
 }
