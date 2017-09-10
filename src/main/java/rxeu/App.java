@@ -13,10 +13,8 @@ import rxeu.problems.*;
  */
 public class App {
 
-    private static final int COUNT = 1;
-
     public static void main(String[] args) {
-        for (int i = 0; i < 3 * COUNT; i += 1) {
+        for (int i = 0; i < 3; i += 1) {
             name(i);
             Instant start = Instant.now();
             run(new P1(), i);

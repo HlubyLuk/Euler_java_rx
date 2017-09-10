@@ -8,6 +8,8 @@ package rxeu.problems;
 import io.reactivex.Observable;
 import java.math.BigInteger;
 import org.jooq.lambda.Seq;
+import org.jooq.lambda.tuple.Tuple;
+import rxeu.entity.Tup2;
 
 /**
  * The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
@@ -20,6 +22,8 @@ import org.jooq.lambda.Seq;
  */
 public class P10 extends PBase {
 
+    private static final int STOP = 2000000;
+
     @Override
     public int problem() {
         return 10;
@@ -27,35 +31,35 @@ public class P10 extends PBase {
 
     @Override
     public void jool() {
-        this.r(
-                Seq.iterate(3, f -> f + 2)
-                        .filter(x -> Seq.range(2, sqrt(x) + 1).allMatch(y -> x % y != 0))
-                        .limitWhile(x -> x < 2000000)
-                        .map(BigInteger::valueOf)
-                        .reduce((x, y) -> x.add(y)).get().add(BigInteger.valueOf(2))
-        );
+        this.r(Seq.iterate(Tuple.tuple(2, BigInteger.ZERO), a -> {
+            for (int i = 2; i * i <= a.v1; i += 1) {
+                if (a.v1 % i == 0) {
+                    return Tuple.tuple(a.v1 + 1, a.v2);
+                }
+            }
+            return Tuple.tuple(a.v1 + 1, a.v2.add(BigInteger.valueOf(a.v1)));
+        }).skip(STOP - 1).limit(1).findAny().get().v2);
     }
 
     @Override
     public void rxJava() {
-        this.r(
-                Observable.<Integer, Integer>generate(() -> 3, (x, y) -> {
-                    y.onNext(x);
-                    return x + 1;
-                }).filter(x -> Observable.range(1, x).skip(1).take(sqrt(x))
-                .all(y -> x % y != 0).blockingGet())
-                        .takeWhile(x -> x < 2000000)
-                        .map(BigInteger::valueOf)
-                        .reduce((x, y) -> x.add(y))
-                        .blockingGet().add(BigInteger.valueOf(2))
-        );
+        Observable.<BigInteger, Tup2<Integer, BigInteger>>generate(()
+                -> new Tup2<>(2, BigInteger.ZERO), (a, b) -> {
+            b.onNext(a.b);
+            for (int i = 2; i * i <= a.a; i += 1) {
+                if (a.a % i == 0) {
+                    return new Tup2<>(a.a + 1, a.b);
+                }
+            }
+            return new Tup2<>(a.a + 1, a.b.add(BigInteger.valueOf(a.a)));
+        }).skip(STOP - 1).take(1).subscribe(this::r);
     }
 
     @Override
     public void java() {
         int a = 1;
         BigInteger b = BigInteger.ZERO;
-        while (a < 2000000) {
+        while (a < STOP) {
             a += 1;
             boolean add = true;
             for (int i = 2; i * i < a + 1; i += 1) {
@@ -70,5 +74,4 @@ public class P10 extends PBase {
         }
         this.r(b);
     }
-
 }
